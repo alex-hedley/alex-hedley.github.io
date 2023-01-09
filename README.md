@@ -8,6 +8,10 @@
 
 - [Site](https://alex-hedley.github.io/)
 
+## Acknowledgements
+
+- [Acknowledgements](ACKNOWLEDGEMENTS.md)
+
 ## Run
 
 `cd src`
