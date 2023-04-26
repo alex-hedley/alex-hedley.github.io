@@ -49,3 +49,8 @@
   white-space: nowrap;
   -webkit-overflow-scrolling: touch;
 }
+
+.card-pill-primary {
+  color: #fff;
+  background-color: #000;
+}

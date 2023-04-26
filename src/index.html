@@ -3,8 +3,9 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="" />
+    <meta name="description" content="Main site." />
     <meta name="author" content="Alex Hedley" />
+    <meta name="keywords" content="Alex Hedley">
     <title>Alex Hedley</title>
     <link rel="canonical" href="https://alex-hedley.github.io/" />
 
@@ -15,6 +16,7 @@
       crossorigin="anonymous"
     />
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/themes/base/jquery-ui.min.css" integrity="sha512-ELV+xyi8IhEApPS/pSj66+Jiw+sOT1Mqkzlh8ExXihe4zfqbWkxPRi8wptXIO9g73FSlhmquFlUOuMSoXz5IRw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <!-- Font Awesome -->
     <!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous"> -->
     <link href="css/vendor/fontawesome/css/fontawesome.css" rel="stylesheet">
@@ -26,7 +28,7 @@
     <link rel="icon" href="favicon.ico" />
     <meta name="theme-color" content="#712cf9" />
   </head>
-  <body>
+  <body ng-app="app">
     <header>
       <div class="collapse bg-dark" id="navbarHeader">
         <div class="container">
@@ -55,7 +57,7 @@
       </div>
     </header>
 
-    <main>
+    <main ng-controller="controller">
       <div class="py-5 bg-light">
 
         <!-- Talks -->
@@ -63,61 +65,38 @@
             <h2 class="pb-2 mt-2 border-bottom"><a href="https://alex-hedley.github.io/talks" target="_blank">🎙️ Talks</a></h2>
 
             <div class="row mb-2">
-                <div class="col">
-                  <div class="card shadow-sm">
-                    <div class="card-body">
-                      <p class="card-text">
-                        Markdown
-                      </p>
-                      <div
-                        class="d-flex justify-content-between align-items-center"
-                      >
-                        <div class="btn-group">
-                          <a href="https://alex-hedley.github.io/talk-markdown" class="btn btn-sm btn-outline-secondary">View</a>
-                          <a href="https://github.com/alex-hedley/talk-markdown" class="btn btn-sm btn-outline-secondary"><i class="fab fa-github"></i> Edit</a>
-                        </div>
-                        <small class="text-muted"></small>
+              <div 
+                  ng-repeat="talk in talks"
+                  class="col-md-4"
+                  style="margin-bottom: 50px;"
+              >
+                  <div class="card" style="width: 18rem;">
+                      <img ng-if="talk.image.length > 0" ng-src="https://alex-hedley.github.io/talks/{{talk.image}}" class="card-img-top" alt="{{talk.name}}">
+                      <div class="card-header">
+                          {{talk.name}}
                       </div>
-                    </div>
+                      <div class="card-body">
+                          <p class="card-text">{{talk.description}}</p>
+                          <div class="card-topics-container">
+                              <div ng-repeat="topic in talk.topics">
+                                  <span class="badge badge-pill card-pill-primary" style="margin-left:5px;">{{topic}}</span>
+                              </div>
+                          </div>
+                          <div class="btn-group">
+                              <button ng-click="openRepository(talk)" type="button" class="btn btn-sm btn-outline-secondary card-button">
+                                  <i class="fab fa-github"></i> View Code
+                              </button>
+                              <button ng-click="openRepositoryHomepage(talk)" type="button" class="btn btn-sm btn-outline-secondary card-button">
+                                  <i class="fas fa-globe-europe"></i>View Site
+                              </button>
+                          </div>
+                      </div>
+                      <div class="card-footer text-muted">
+                          {{talk.date | toDate | date:'mediumDate'}}
+                      </div>
                   </div>
-                </div>
-                <div class="col">
-                    <div class="card shadow-sm">
-                        <div class="card-body">
-                          <p class="card-text">
-                            Static Site Generators
-                          </p>
-                          <div
-                            class="d-flex justify-content-between align-items-center"
-                          >
-                            <div class="btn-group">
-                              <a href="https://alex-hedley.github.io/talk-static-site-generators" class="btn btn-sm btn-outline-secondary">View</a>
-                              <a href="https://github.com/alex-hedley/talk-static-site-generators" class="btn btn-sm btn-outline-secondary"><i class="fab fa-github"></i> Edit</a>
-                            </div>
-                            <small class="text-muted"></small>
-                          </div>
-                        </div>
-                      </div>
-                </div>
-                <div class="col">
-                    <div class="card shadow-sm">
-                        <div class="card-body">
-                          <p class="card-text">
-                            git
-                          </p>
-                          <div
-                            class="d-flex justify-content-between align-items-center"
-                          >
-                            <div class="btn-group">
-                              <a href="https://alex-hedley.github.io/talk-git" class="btn btn-sm btn-outline-secondary">View</a>
-                              <a href="https://github.com/alex-hedley/talk-git" class="btn btn-sm btn-outline-secondary"><i class="fab fa-github"></i> Edit</a>
-                            </div>
-                            <small class="text-muted"></small>
-                          </div>
-                        </div>
-                      </div>
-                </div>
               </div>
+          </div>
 
         </div>
 
@@ -559,10 +538,14 @@
       </div>
     </footer>
 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js" integrity="sha512-57oZ/vW8ANMjR/KQ6Be9v/+/h6bq9/l3f0Oc7vn6qMqyhvPd1cvKBRWWpzu0QoneImqr2SkmO4MSqU+RpHom3Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.5/angular.min.js"></script>
     <script
       src="js/vendor/bootstrap/bootstrap.bundle.min.js"
       integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
       crossorigin="anonymous"
     ></script>
+    <script src="js/app.js"></script>
   </body>
 </html>
